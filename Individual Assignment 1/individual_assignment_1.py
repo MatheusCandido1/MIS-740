@@ -1,5 +1,3 @@
-import json
-
 print('First year salary: ')
 salary = input()
 
@@ -20,6 +18,3 @@ for year in range(0, int(years)-1):
     'salary': round((salariesByYear[year]['salary'] * 1.032),2) if year < 13 else round((salariesByYear[12]['salary'] * 1.032),2)
   }
   salariesByYear.append(data)
-
-# Results
-print(json.dumps(salariesByYear, indent=4))
