@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+""" 08:32:44 2022
+Created on Fri Sep 09 08:32:44 2022
+
+@author: Matheus Carvalho
+"""
+
 print('First year salary: ')
 salary = input()
 
