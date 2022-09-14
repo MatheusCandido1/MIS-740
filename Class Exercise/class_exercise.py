@@ -1,35 +1,60 @@
-# -*- coding: utf-8 -*-
 """
-Created on Tue Sep 13 13:49:08 2022
+# BMI Calculator Application
+This application calculates the BMI of a human being
+Input: Weight (in pounds) and Height (in inches) of the user
+Output: BMI rate and classification
+Processing: 
+1 - Get user input
+2 - Validate user input
+3 - Convert the weight to kilograms and the height to meters
+4 - Calculate the BMI using the following formula (weight/(height^2))
+5 - Get the classification based on the BMI
+6 - Show the BMI and the Classification to the user
 
-@author: Matheus Carvalho
+* Author: Matheus Carvalho
+* Date: 09-14-2022
 """
-def getBMILabel(bmi): 
-  if bmi <= 18.5:
+# Define constants to facilitate further updates
+HEIGHT_CONVERT_RATE = 39.37
+WEIGHT_CONVERT_RATE = 2.205
+
+# Define function to get the Body Mass Index and return the classification
+def getBodyMassIndexClassification(bodyMassIndex): 
+  if bodyMassIndex <= 18.5:
     return 'Under weight'
-  if bmi <= 24.9:
+  if bodyMassIndex <= 24.9:
     return 'Normal'
-  if bmi <= 29.9:
+  if bodyMassIndex <= 29.9:
     return 'Over Weight'
-  if bmi <= 34.9:
+  if bodyMassIndex <= 34.9:
     return 'Obesity (Class I)'
-  if bmi <= 39.9:
+  if bodyMassIndex <= 39.9:
     return 'Obesity (Class II)'
-  if bmi > 40:
+  if bodyMassIndex > 40:
     return 'Extreme Obesity'
 
+# Show name of application
 print('BMI Calculator')
 
-height = float(input('Your Height (in inches): '))
-weight = float(input('Your Weigth (in pounds): '))
+# Get the user's height
+height = float(input('Please enter your height (in inches): '))
 
+# Get the user's weight
+weight = float(input('Please enter your height (in pounds): '))
+
+# Validate if the inputs are valid 
 if height <= 0 or weight <= 0:
   print('Invalid input, please try again!')
   exit()
   
-heightConvertedToMeters = height / 39.37
-weightConvertedToKilograms = weight / 2.205
+# Convert height from inches to meters
+heightConvertedToMeters = height / HEIGHT_CONVERT_RATE
 
-bmi = weightConvertedToKilograms / pow(heightConvertedToMeters,2)
+# Convert weight from pounds to kilograms
+weightConvertedToKilograms = weight / WEIGHT_CONVERT_RATE
 
-print('Your BMI is ' + str(round(bmi,1)) + ' and your classification is ' + getBMILabel(bmi))
+# Calculate the Body Mass Index using the formula
+bodyMassIndex = weightConvertedToKilograms / pow(heightConvertedToMeters,2)
+
+# Show the Body Mass Index and its classification
+print('Your BMI is ' + str(round(bodyMassIndex,1)) + ' and your classification is ' + getBodyMassIndexClassification(bodyMassIndex))

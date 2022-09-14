@@ -1,48 +1,61 @@
-# -*- coding: utf-8 -*-
 """
-Created on Tue Sep 13 13:52:43 2022
+# Phone Bill Calculator Application
+This application calculates the phone bill of the customers
+Input: Data usage and Account year
+Output: Calls and texts charges, data charges and total charges
+Processing: 
+1 - Get user input
+2 - Validate user input
+3 - Check the account's year is greater or equal 2020 to define the charging rate
+4 - Check if the data usage charge exceeded the charging amount
+5 - Calculate the total amount by adding the data charges and the text and phone charges
+6 - Show the texts and calls, data and total charges to the user
 
-@author: Matheus Carvalho
+* Author: Matheus Carvalho
+* Date: 09-14-2022
 """
 # Define constants to facilitate further updates
-UNLIMITED_CALLS_AND_TEXTS = 9.99
+UNLIMITED_CALLS_AND_TEXTS_CHARGE = 9.99
 OLD_CUSTOMER_RATE = 9.50
 NEW_CUSTOMER_RATE = 11.30
+MAXIMUM_DATA_CHARGE = 30.00
+DIFFERENTIATION_YEAR = 2020
+
 
 # Set function to format floats and integers to Currency Format
-def formatCurrency(value):
+def formatToCurrency(value):
   return '$' + str(format(value,'.2f'))
 
 # Print initial message
 print('The purpose of the program is to calculate the cell phone bill for customers of a cell phone company')
 
-# Get data usage from user
+# Get the user's data usage
 print('Please enter the data usage last month in GB:')
 dataUsage = float(input())
 
-# Get account year from user
+# Get the user's account's year
 print('Please enter the year the account is opend:')
-accountYear = float(input())
+accountYear = int(input())
 
 # Validate if the inputs are valid 
-if dataUsage <= 0 or accountYear <= 0:
+if dataUsage < 0 or accountYear <= 0:
   print('Invalid input, please try again!')
   exit()
 
 # Check if the user is an old or a new customer and apply the correct rate
-if accountYear >= 2020:
+if accountYear >= DIFFERENTIATION_YEAR:
   dataUsageSubtotal = dataUsage * NEW_CUSTOMER_RATE
 else:
   dataUsageSubtotal = dataUsage * OLD_CUSTOMER_RATE
 
 # Check if the data usage is above the limit to correct the charge
-if dataUsageSubtotal > 30:
-  dataUsageSubtotal = 30.00
+if dataUsageSubtotal > MAXIMUM_DATA_CHARGE:
+  dataUsageSubtotal = MAXIMUM_DATA_CHARGE
 
 # Sum the data usage with the default value for calls and texts
-total = dataUsageSubtotal + UNLIMITED_CALLS_AND_TEXTS;
+total = dataUsageSubtotal + UNLIMITED_CALLS_AND_TEXTS_CHARGE;
 
 # Print all results
-print('Calls and Texts: ' + formatCurrency(UNLIMITED_CALLS_AND_TEXTS))
-print('Data: ' + formatCurrency(dataUsageSubtotal))
-print('Total: ' + formatCurrency(total))
+print('Calls and Texts: ' + formatToCurrency(UNLIMITED_CALLS_AND_TEXTS_CHARGE))
+print('Data: ' + formatToCurrency(dataUsageSubtotal))
+print('Total: ' + formatToCurrency(total))
