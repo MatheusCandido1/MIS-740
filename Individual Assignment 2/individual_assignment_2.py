@@ -6,9 +6,9 @@ Output: Calls and texts charges, data charges and total charges
 Processing: 
 1 - Get user input
 2 - Validate user input
-3 - Check the account's year is greater or equal 2020 to define the charging rate
-4 - Check if the data usage charge exceeded the charging amount
-5 - Calculate the total amount by adding the data charges and the text and phone charges
+3 - Check the account's year is greater or equal the differentiation year to define the charging rate
+4 - Check if the data usage charge exceeded the maximum data charge amount
+5 - Calculate the total amount by adding the data charges to the text and phone charges
 6 - Show the texts and calls, data and total charges to the user
 
 * Author: Matheus Carvalho
