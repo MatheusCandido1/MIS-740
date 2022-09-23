@@ -12,7 +12,7 @@ Processing:
 6 - Show the texts and calls, data and total charges to the user
 
 * Author: Matheus Carvalho
-* Date: 09-14-2022
+* Date: 09-23-2022
 """
 # Define constants to facilitate further updates
 UNLIMITED_CALLS_AND_TEXTS_CHARGE = 9.99
