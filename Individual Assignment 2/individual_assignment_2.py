@@ -21,7 +21,6 @@ NEW_CUSTOMER_RATE = 11.30
 MAXIMUM_DATA_CHARGE = 30.00
 DIFFERENTIATION_YEAR = 2020
 
-
 # Set function to format floats and integers to Currency Format
 def formatToCurrency(value):
   return '$' + str(format(value,'.2f'))
@@ -33,15 +32,17 @@ print('The purpose of the program is to calculate the cell phone bill for custom
 print('Please enter the data usage last month in GB:')
 dataUsage = float(input())
 
+# Validate if Data Usage is valid. If not, ask the user to input the value again
 while dataUsage < 0:
   print('Data usage cannot be negative. Try again')
   print('Please enter the data usage last month in GB:')
   dataUsage = float(input())
+
 # Get the user's account's year
 print('Please enter the year the account is opend:')
 accountYear = int(input())
 
-# Validate if the inputs are valid 
+# Validate if the Year of Account is valid. If not, ask the user to input the value again
 while accountYear <= 0:
   print('Year of the account cannot be 0 or negative. Try again')
   print('Please enter the year the account is opend:')
