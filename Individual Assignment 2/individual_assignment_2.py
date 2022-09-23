@@ -33,14 +33,19 @@ print('The purpose of the program is to calculate the cell phone bill for custom
 print('Please enter the data usage last month in GB:')
 dataUsage = float(input())
 
+while dataUsage < 0:
+  print('Data usage cannot be negative. Try again')
+  print('Please enter the data usage last month in GB:')
+  dataUsage = float(input())
 # Get the user's account's year
 print('Please enter the year the account is opend:')
 accountYear = int(input())
 
 # Validate if the inputs are valid 
-if dataUsage < 0 or accountYear <= 0:
-  print('Invalid input, please try again!')
-  exit()
+while accountYear <= 0:
+  print('Year of the account cannot be 0 or negative. Try again')
+  print('Please enter the year the account is opend:')
+  accountYear = float(input())
 
 # Check if the user is an old or a new customer and apply the correct rate
 if accountYear >= DIFFERENTIATION_YEAR:
