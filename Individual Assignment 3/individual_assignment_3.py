@@ -14,7 +14,7 @@ Processing:
 print('Please enter the number of books checked out:')
 numberOfBooks = int(input())
 
-if numberOfBooks < 1:
+while numberOfBooks < 1:
   print('The number of books checked out should be a positive number.\nPlease enter again:')
 
 bookNumber = 0
