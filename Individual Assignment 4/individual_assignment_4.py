@@ -44,10 +44,28 @@ def validate_part_number(partNumber):
   else:
     return True
 
+def validate_part_middle_numbers(partNumber):
+  if(partNumber[1:4].isdigit()):
+    return True
+  else:
+    print('The second, third, and fourth characters should be an integer. \n')
+    return False
+
 def validate_part(partNumber):
   if validate_part_number_size(partNumber):
     if validate_part_number(partNumber):
-      return get_part_price(partNumber)
+      if validate_part_middle_numbers(partNumber):
+        return '$' + str(get_part_price(partNumber))
+
+def print_parts(parts):
+  print('All the parts and the prices just checked')
+  for part in parts:
+    print(part.ljust(10, '.') + str(parts.get(part)).rjust(4))
+
+def format_part(partNumber):
+  partNumber = partNumber.replace(" ", "")
+  return partNumber
+  
 
 parts = {}
 
@@ -55,14 +73,17 @@ checkOtherPart = True
 
 while checkOtherPart:
   print('Please enter the part number:')
-  partNumber = input().upper()
+  partNumber = format_part(input().upper())
 
   partPrice = validate_part(partNumber)
     
   while not partPrice:
     print('pleaser enter again: ')
-    partNumber = input().upper()
+    partNumber = format_part(input().upper())
     partPrice = validate_part(partNumber)
+
+
+  validate_part_middle_numbers(partNumber)
 
 
   print('The part ' + partNumber + ' is $' + str(get_part_price(partNumber)))
@@ -80,7 +101,4 @@ while checkOtherPart:
   else:
     checkOtherPart = True
 
-
-print('All the parts and the prices just checked')
-for part in parts:
-  print(part + '.....$' + str(parts.get(part)))
+print_parts(parts)
