@@ -1,11 +1,17 @@
 """
 # Course Record
+This application work as a simple height converter, converting centimeters to feet and inches.
+Input: List of heights in centimeters
+Output: List of heights in feet and inches
 Processing:
 1 - Get user input
 * Author: Matheus Carvalho
 * Date: 10-18-2022
 """
+#Import OS to use the path
 import os
+
+#Import NumPy to use the array
 import numpy as np
 
 def print_file_content(courseList):
