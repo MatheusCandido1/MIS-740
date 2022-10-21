@@ -31,6 +31,20 @@ import os
 #Import NumPy to use the array
 import numpy as np
 
+# Define function to format course number
+def format_course_number(courseNumber):
+   # Get the last 3 digits of the course number (ex: 700/740/760)
+    code = courseNumber[-3:]
+
+    # Get the original course number and remove the last 3 digits, then we get the course number without the code (ex: MIS/CSEC) and remove all unnecessary spaces
+    initials = courseNumber.replace(code, '').replace(' ', '')
+
+    # Concatenate the initials and the code
+    formattedCourseNumber = initials.upper() + ' ' + code
+
+    # Return the course number with the code and the initials
+    return formattedCourseNumber
+
 # Define function to print the content of the file
 def print_file_content(courses):
     # Loop through the array 
@@ -39,9 +53,6 @@ def print_file_content(courses):
       currentCourse = course.split(',')
       # Print the course number, course name, semester the course is taken, number of credits, and grade justifying the text to the left
       print(currentCourse[0].ljust(12, ' ') + currentCourse[1].ljust(35, ' ') + currentCourse[2].ljust(16, ' ') + currentCourse[3].ljust(4, ' ') + currentCourse[4].ljust(4, ' '))
-
-# Define the path to the file
-path = os.path.join(os.path.dirname(__file__))
 
 # Ask the user for the file name
 print('Please enter the name of a text file with the extension of .txt or .csv:')
@@ -52,17 +63,14 @@ while not fileName.endswith('.txt') and not fileName.endswith('.csv'):
     print('Please enter the name of a text file with the extension of .txt or .csv:')
     fileName = input()
 
-# Concatenate the path with the file name
-fullPath = path + '\\' + fileName
-
 # Validate if the file exists
-if not os.path.exists(fullPath):
+if not os.path.exists(fileName):
   print('The file does not exist')
   # Exit the program if the file does not exist
   exit()
 
 # Open the file in read mode
-courseFile = open(fullPath, 'r')
+courseFile = open(fileName, 'r')
 
 # Read all the lines from the file
 courseList = courseFile.read().splitlines()
@@ -83,6 +91,7 @@ while addNewCourse.upper() != 'Y' and addNewCourse.upper() != 'N':
   print('Would you like to add a new course to the file? (Y/N)')
   addNewCourse = input()
 
+userInteractedWithFile = False
 # Loop while the user wants to add a new course
 while addNewCourse.upper() == 'Y':
   # Ask the user for the course number
@@ -109,13 +118,15 @@ while addNewCourse.upper() == 'Y':
   courseGrade = input()
 
   # format the course number, course name, semester the course is taken, number of credits, and grade to insert in the file
-  newCourse = f'{courseNumber.upper()},{courseName.title()},{courseSemester.title()},{courseCredits},{courseGrade.upper()}\n'
+  newCourse = f'{format_course_number(courseNumber)},{courseName.title()},{courseSemester.title()},{courseCredits},{courseGrade.upper()}\n'
   # Open the file in append mode
-  courseFile = open(fullPath, 'a')
+  courseFile = open(fileName, 'a')
   # Write the new course record to the file
   courseFile.write(newCourse)
   # Close the file
   courseFile.close()
+
+  userInteractedWithFile = True
 
   # Ask the user if he wants to record another course
   print('Would you like to add another course new course record to the file? (Y/N)')
@@ -126,6 +137,5 @@ while addNewCourse.upper() == 'Y':
     print('Would you like to add another course new course record to the file? (Y/N)')
     addNewCourse = input()
 
-# Print that the file has been saved. Finish the program    
-print('file saved.')
-
+# If user has made any updates in the file, Print that the file has been saved. Finish the program    
+userInteractedWithFile and print('file saved.')

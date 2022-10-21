@@ -17,20 +17,14 @@ Processing:
 * Author: Matheus Carvalho
 * Date: 10-19-2022
 """
-# Import OS to use the path
-import os
-
 # Import NumPy to use the array
 import numpy as np
 
 # Create constants to facilitate further updates
 CONVERT_RATE = 30.48
 
-# Get the path of the file
-path = os.path.join(os.path.dirname(__file__))
-
 # Open the file in read mode using the path and filename 
-file = open(path + '/heights_in_cm.txt', 'r')
+file = open('heights.csv')
 
 # Read the file and store it in a list
 heightsList = file.read().splitlines()
@@ -39,10 +33,10 @@ heightsList = file.read().splitlines()
 file.close()
 
 # Convert the list to an NumPy array
-heightsArray = np.array(heightsList, dtype='float32')
+heightsArray = np.array(heightsList, dtype='int32')
 
 # Create a new file to store the converted values
-newFile = open(path + '/heights_in_feet.txt', 'x')
+newFile = open('heights_converted.csv', 'x')
 
 # Loop through the heights array and convert the values
 for height in heightsArray:
