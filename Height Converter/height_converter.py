@@ -22,7 +22,6 @@ import numpy as np
 
 # Create constants to facilitate further updates
 CONVERT_RATE = 30.48
-
 # Open the file in read mode using the path and filename 
 file = open('heights.csv')
 
