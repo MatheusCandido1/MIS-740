@@ -14,6 +14,8 @@ Output: The state tax income for the year and for the state.:
 9 - Merge the data from the tax income file with the data the description of the state tax income
 10 -Filter the merged data using the state abbreviation entered by the user
 11 - Print the state tax income for the year and for the state.
+* Author: Matheus Carvalho
+* Date: 11-13-2022
 """
 
 # Import Pandas to read the files
