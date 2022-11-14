@@ -12,6 +12,7 @@ Processing:
 # Import NumPy to use the array
 
 import pandas as pd
+
 import numpy as np
 
 yearCode = {
@@ -23,7 +24,7 @@ yearCode = {
 
 descriptionFile = 'taxitemcodesanddescriptions.csv'
 
-filesList = ['FY2018-STC-Detailed-Table','FY2019','FY2020','FY2022']
+filesList = ['FY2018-STC-Detailed-Table','FY2019','FY2020','FY2021']
 extension = '.csv'
 
 filesList = [i + extension for i in filesList]
@@ -35,7 +36,6 @@ taxTable2018 = pd.read_csv(filesList[0])
 statesList = list(taxTable2018.columns)
 
 validStates = tuple(statesList[1:])
-validYears = (2018, 2019, 2020, 2021)
 
 print("Please enter the abbreviation of a state to see the tax information")
 state = input().upper()
@@ -47,7 +47,7 @@ while state not in validStates:
 print("Please enter the year (2018, 2019, 2020 or 2021)")
 year = int(input())
 
-while year not in validYears:
+while year not in yearCode.keys():
     print("Currently, only the data for 2018, 2019, 2020 and 2021 are available, please enter again:")
     year = int(input())
 
