@@ -1,5 +1,10 @@
 from connect import mycursor
 
+def create_tables():
+  create_companies_table()
+  create_candidates_table()
+  create_proposals_table()
+
 # Create table Companies
 def create_companies_table():
   mycursor.execute("CREATE TABLE IF NOT EXISTS companies (id int(11) primary key not null auto_increment, name VARCHAR(255), address VARCHAR(255))")
