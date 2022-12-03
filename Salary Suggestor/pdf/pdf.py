@@ -3,17 +3,14 @@
 from fpdf import FPDF
 from fpdf.html import hex2dec
 from datetime import date
+import os
 
-today = date.today()
-date = today.strftime("%B %d, %Y")
-recipientName = 'Sweastik Pokhrel'
-jobTitle = 'Manager'
-companyName = 'XYZ Company'
-companyAddress = '1234 ABZ Street'
-city = 'Las Vegas'
-salary = '100,000'
-startDate = '11/25/2022'
-colorCode = "#F6546A"
+
+sign = 'If you choose to accept this job offer, please sign the second copy of this letter and return it to me at your earliest convenience.'
+
+acknowledgment = 'When your acknowledgment is received, we will send you employee benefit enrollment forms and an employee handbook that details our benefit plans and retirement plan. We look forward to welcoming you at our company.'
+
+information = 'Please let me know if you have any questions or if I can provide any additional information.'
 
 class PDF(FPDF):
     def header(self):
@@ -39,6 +36,20 @@ class PDF(FPDF):
         
 
 def generate_pdf():
+    today = date.today()
+
+    pdfData = {
+        "recipientName": "John Doe",
+        "jobTitle": "Software Engineer",
+        "companyName": "ABC Company",
+        "companyAddress": "123 Main Street",
+        "city": "New York",
+        "date": today.strftime("%B %d, %Y"),
+        "salary": "100,000",
+        "startDate": "11/25/2022",
+        "colorCode": "#F6546A",
+        "benefits": "Full family medical coverage will be provided through our company's employee benefit plan and will be effective on June 1. Dental and optical insurance are also available. The company offers a flexible paid time-off plan which includes vacation, personal and sick leave. Time off accrues at the rate of one day per month for your first year, then increased based on your tenure with the company. Eligibility for the company retirement plan begins 90 days after your start date.",
+    }
     # save FPDF() class into a
     # variable pdf
     pdf = PDF()
@@ -50,7 +61,7 @@ def generate_pdf():
     # that you want in the pdf
     pdf.set_font("times", size = 12)
     #set the color for the line
-    pdf.set_draw_color(*hex2dec(colorCode))
+    pdf.set_draw_color(*hex2dec(pdfData['colorCode']))
     #set the width of the line
     pdf.set_line_width(2)
     #set the line
@@ -60,29 +71,38 @@ def generate_pdf():
 
     pdf.set_font("times", size = 12)
     # create a cell
-    pdf.cell(180, 6, txt = "Date : " + str(date) ,ln = 1)
+    pdf.cell(180, 6, txt = "Date : " + str(pdfData['date']) ,ln = 1)
     # add another cell
-    pdf.cell(180, 6, txt = "Recipient Name : " + recipientName ,ln = 1)
+    pdf.cell(180, 6, txt = "Recipient Name : " + pdfData['recipientName'] ,ln = 1)
     # add another cell
-    pdf.cell(180, 6, txt = "Title : " + jobTitle ,ln = 1)
+    pdf.cell(180, 6, txt = "Title : " + pdfData['jobTitle'] ,ln = 1)
     # add another cell
-    pdf.cell(180, 6, txt = "Company Name : " + companyName ,ln = 1)
+    pdf.cell(180, 6, txt = "Company Name : " + pdfData['companyName'] ,ln = 1)
     # add another cell
-    pdf.cell(180, 6, txt = "Address : " + companyAddress ,ln = 1)
+    pdf.cell(180, 6, txt = "Address : " + pdfData['companyAddress'] ,ln = 1)
     # add another cell
-    pdf.cell(180, 6, txt = "City : " + city ,ln = 1)
+    pdf.cell(180, 6, txt = "City : " + pdfData['city'] ,ln = 1)
     # add another cell
-    pdf.cell(180, 15, txt = "Dear " + recipientName + "," ,ln = 1)
+    pdf.cell(180, 15, txt = "Dear " + pdfData['recipientName'] + "," ,ln = 1)
 
 
-    pdf.multi_cell(180,5, txt= companyName + "is pleased to offer you the position of " + jobTitle + ". Your skills and experience will be ideal fit for our company." )
+    pdf.multi_cell(180,5, txt= pdfData['companyName'] + "is pleased to offer you the position of " + pdfData['jobTitle'] + ". Your skills and experience will be ideal fit for our company." )
     pdf.ln(4)
-    pdf.multi_cell(180,5, txt="As we discussed, your starting date will be" + startDate + ". The starting salary is $" +salary+" per year and is paid on a weekly basis. Direct deposit is available." )
+    pdf.multi_cell(180,5, txt="As we discussed, your starting date will be" + pdfData['startDate'] + ". The starting salary is $" +pdfData['salary']+" per year and is paid on a weekly basis. Direct deposit is available." )
     pdf.ln(4)
-    pdf.body('body.txt')
+    pdf.multi_cell(180, 5, txt=pdfData['benefits'])
+    pdf.ln(4)
+    pdf.multi_cell(180, 5, txt=sign)
+    pdf.ln(4)
+    pdf.multi_cell(180, 5, txt=acknowledgment)
+    pdf.ln(4)
+    pdf.multi_cell(180, 5, txt=information)
     pdf.ln(6)
     pdf.cell(180, 5, txt = "Sincerely, " ,ln = 2)
-    pdf.cell(180, 5, txt = companyName ,ln = 2)
-    pdf.cell(180, 5, txt = companyAddress + ", " + city ,ln = 2)
+    pdf.cell(180, 5, txt = pdfData['companyName'] ,ln = 2)
+    pdf.cell(180, 5, txt = pdfData['companyAddress'] + ", " + pdfData['city'] ,ln = 2)
     # save the pdf with name .pdf
     pdf.output("Proposal.pdf")
+    os.system('Proposal.pdf')
+
+generate_pdf()

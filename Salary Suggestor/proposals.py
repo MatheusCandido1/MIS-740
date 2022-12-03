@@ -1,4 +1,5 @@
 from controllers import candidate_controller, proposal_controller
+from pdf import pdf
 
 def get_status(status):
     if status == 'PENDING':
@@ -106,6 +107,8 @@ def view_proposal():
       confirmation = input()
     if confirmation in ['Y', 'y']:
       print('Generating PDF...')
+      pdf.generate_pdf()
+
 
   else:
     print('Proposal not found.')
