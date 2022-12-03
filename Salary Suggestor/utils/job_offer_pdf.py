@@ -5,7 +5,6 @@ from fpdf.html import hex2dec
 from datetime import date
 import os
 
-
 sign = 'If you choose to accept this job offer, please sign the second copy of this letter and return it to me at your earliest convenience.'
 
 acknowledgment = 'When your acknowledgment is received, we will send you employee benefit enrollment forms and an employee handbook that details our benefit plans and retirement plan. We look forward to welcoming you at our company.'
@@ -34,21 +33,21 @@ class PDF(FPDF):
         #line break
         self.ln(6)
         
+def format_currency(value):
+    return f"$ {value:,.2f}"
 
-def generate_pdf():
-    today = date.today()
-
+def generate_pdf(company, candidate, proposal):
     pdfData = {
-        "recipientName": "John Doe",
-        "jobTitle": "Software Engineer",
-        "companyName": "ABC Company",
-        "companyAddress": "123 Main Street",
-        "city": "New York",
-        "date": today.strftime("%B %d, %Y"),
-        "salary": "100,000",
+        "recipientName": candidate['name'],
+        "jobTitle": proposal['job_title'],
+        "companyName": company['name'],
+        "companyAddress": company['address'],
+        "city": company['city'],
+        "date": proposal['proposal_date'].strftime("%B %d, %Y"),
+        "salary": proposal['salary'],
         "startDate": "11/25/2022",
-        "colorCode": "#F6546A",
-        "benefits": "Full family medical coverage will be provided through our company's employee benefit plan and will be effective on June 1. Dental and optical insurance are also available. The company offers a flexible paid time-off plan which includes vacation, personal and sick leave. Time off accrues at the rate of one day per month for your first year, then increased based on your tenure with the company. Eligibility for the company retirement plan begins 90 days after your start date.",
+        "colorCode": company['color'],
+        "benefits": company['benefits'],
     }
     # save FPDF() class into a
     # variable pdf
@@ -88,7 +87,7 @@ def generate_pdf():
 
     pdf.multi_cell(180,5, txt= pdfData['companyName'] + "is pleased to offer you the position of " + pdfData['jobTitle'] + ". Your skills and experience will be ideal fit for our company." )
     pdf.ln(4)
-    pdf.multi_cell(180,5, txt="As we discussed, your starting date will be" + pdfData['startDate'] + ". The starting salary is $" +pdfData['salary']+" per year and is paid on a weekly basis. Direct deposit is available." )
+    pdf.multi_cell(180,5, txt="As we discussed, your starting date will be " + pdfData['startDate'] + ". The starting salary is " +format_currency(pdfData['salary'])+" per year and is paid on a weekly basis. Direct deposit is available." )
     pdf.ln(4)
     pdf.multi_cell(180, 5, txt=pdfData['benefits'])
     pdf.ln(4)
@@ -104,5 +103,3 @@ def generate_pdf():
     # save the pdf with name .pdf
     pdf.output("Proposal.pdf")
     os.system('Proposal.pdf')
-
-generate_pdf()

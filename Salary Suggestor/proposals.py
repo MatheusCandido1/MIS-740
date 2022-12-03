@@ -1,6 +1,5 @@
 from controllers import candidate_controller, proposal_controller
-from pdf import pdf
-
+from utils import suggestor, job_offer_pdf
 def get_status(status):
     if status == 'PENDING':
         return '1'
@@ -9,10 +8,11 @@ def get_status(status):
     if status == 'DECLINED':
         return '3'
 
-def get_salary_suggestion():
-  return ['1000', '2000']
+def get_salary_suggestion(candidate, company):
+  value = suggestor.get_salary_suggestion(candidate, company)
+  return (value['min'], value['max'])
 
-def create_new_proposal():
+def create_new_proposal(company):
   candidateId = input('Please enter the ID of the candidate: ')
   while candidateId == '':
     print('ID of the candidate cannot be empty.')
@@ -46,14 +46,33 @@ def create_new_proposal():
   if proposal['job_title'] == '':
     print('Job title cannot be empty.')
     proposal['job_title'] = input()
+  #
+  selectedCompany = {
+    'employees': company[6],
+  }
 
-  print('For this candidate, we suggest the following salary range: U$' + str(get_salary_suggestion()[0]) + ' - U$' + str(get_salary_suggestion()[1]))
+  selectedCandidate = {
+    'experience_level': candidate[5],
+    'employment_type': candidate[6],
+  }
+
+  salaryRange = get_salary_suggestion(selectedCandidate, selectedCompany)
+  print('For this candidate, we suggest a salary range of $' + str(salaryRange[0]) + ' to $' + str(salaryRange[1]) + '.')
 
   print('Please enter the salary:')
   proposal['salary'] = input()
   if proposal['salary'] == '':
     print('Salary cannot be empty.')
     proposal['salary'] = input()
+
+  if float(proposal['salary']) < salaryRange[0] or float(proposal['salary']) > salaryRange[1]:
+    print('The salary you entered is outside the suggested range. Are you sure you want to continue? (Y/N)')
+    confirmation = input()
+    while confirmation not in ['Y', 'y', 'N', 'n']:
+      print('Please enter a valid option: (Y/N)')
+      confirmation = input()
+    if confirmation in ['N', 'n']:
+      manage_proposals()
 
   proposal_controller.store(proposal)
 
@@ -83,7 +102,7 @@ def delete_proposal():
     print('Proposal not found.')
   manage_proposals()
 
-def view_proposal():
+def view_proposal(company):
   print('Please enter the ID of the proposal you wish to view.')
   proposalId = input()
   while proposalId == '':
@@ -93,7 +112,7 @@ def view_proposal():
   currentProposal = proposal_controller.show(proposalId)
   if currentProposal:
     print('\nSelected Proposal Information: ')
-    print('ID: '.ljust(18), currentProposal[1])
+    print('ID: '.ljust(18), currentProposal[0])
     print('Proposal Date: '.ljust(18), currentProposal[2])
     print('Job Title: '.ljust(18), currentProposal[3])
     print('Salary Offered: '.ljust(18), currentProposal[4])
@@ -107,7 +126,24 @@ def view_proposal():
       confirmation = input()
     if confirmation in ['Y', 'y']:
       print('Generating PDF...')
-      pdf.generate_pdf()
+      selectedCompany = {
+        'name': company[1],
+        'address': company[2],
+        'city': company[3],
+        'color': company[4],
+        'benefits': company[5],
+      }
+      selectedCandidate = {
+        'name': currentProposal[6],
+      }
+      selectedProposal = {
+        'job_title': currentProposal[3],
+        'salary': currentProposal[4],
+        'proposal_date': currentProposal[2],
+      }
+
+      job_offer_pdf.generate_pdf(selectedCompany, selectedCandidate, selectedProposal)
+      manage_proposals()
 
 
   else:
@@ -171,7 +207,7 @@ def show_proposals_menu():
     print ('4 - Delete Existing Proposal')
     print ('5 - Go Back\n')
 
-def manage_proposals():
+def manage_proposals(company):
   show_proposals_menu()
 
   print ('Please enter the option:')
@@ -182,9 +218,9 @@ def manage_proposals():
       option = input()
   
   if option == '1':
-    create_new_proposal()
+    create_new_proposal(company)
   elif option == '2':
-    view_proposal()
+    view_proposal(company)
   elif option == '3':
     update_existing_proposal()
   elif option == '4':

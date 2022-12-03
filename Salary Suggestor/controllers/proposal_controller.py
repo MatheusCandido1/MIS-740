@@ -14,7 +14,7 @@ def index():
   return result
 
 def show(id):
-  sql = "SELECT * FROM proposals WHERE id = %s"
+  sql = "SELECT proposals.id as proposal_id, candidate_id, proposal_date, job_title, salary, status, name, address, experience_level, employment_type FROM proposals INNER JOIN candidates ON proposals.candidate_id = candidates.id WHERE proposals.id = %s"
   val = (id,)
   connect.cursor.execute(sql, val)
   result = connect.cursor.fetchone()

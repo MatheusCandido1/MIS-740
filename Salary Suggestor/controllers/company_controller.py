@@ -1,8 +1,10 @@
 from database import connect
 
-def index():
-  connect.cursor.execute("SELECT * FROM companies limit 1")
-  result = connect.cursor.fetchall()
+def show(companyId):
+  query = "SELECT * FROM companies WHERE id = %s"
+  values = (companyId,)
+  connect.cursor.execute(query, values)
+  result = connect.cursor.fetchone()
   return result
 
 def update(company):
