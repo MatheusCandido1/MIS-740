@@ -1,5 +1,5 @@
-from connect import mycursor
+from connect import cursor
 
 def create_database():
-  mycursor.execute('CREATE DATABASE IF NOT EXISTS db_salarysuggestor')
-  mycursor.execute('USE db_salarysuggestor')
+  cursor.execute('CREATE DATABASE IF NOT EXISTS db_salarysuggestor')
+  cursor.execute('USE db_salarysuggestor')

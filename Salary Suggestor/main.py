@@ -4,6 +4,7 @@
 """
 
 from controllers import company_controller
+import candidates, proposals, companies
 
 def update_company(company):
   print('Current Name: '+ str(company[0][1]))
@@ -26,8 +27,6 @@ def update_company(company):
   
   company_controller.update(updateCompany)
 
-
-
 def welcome(company):
   print('\nThis software belongs to ' + str(company[0][1]) + '\n')
 
@@ -37,12 +36,10 @@ def welcome(company):
 
 def show_menu():
   print('\nMenu: \n')
-
   print('1 - Manage Company')
   print('2 - Manage Candidates')
   print('3 - Manage Proposals')
   print('4 - Exit \n')
-
 
 company = company_controller.index()
 welcome(company)
@@ -53,17 +50,20 @@ answer = input()
 if answer.lower() == 'y':
   update_company(company)
 
-show_menu()
-
-option = input()
-
-while option != '4':
-  print('Software runs here')
-
+def bootstrap():
+  show_menu()
   option = input()
 
-if option == '4':
-  print('Thank you for using our software!')
-  exit()
+  while option != '4':
+    if option == '1':
+      companies.manage_companies()
+    if option == '2':
+      candidates.manage_candidates()
+    if option == '3':
+      proposals.manage_proposals()
 
+  if option == '4':
+    print('Thank you for using our software!')
+    exit()
 
+bootstrap()

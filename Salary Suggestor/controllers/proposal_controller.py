@@ -1,29 +1,39 @@
 from database import connect
 
-def store(date, candidate_id, job_title, salary, status):
-  sql = "INSERT INTO proposals (date, candidate_id, job_title, salary, status) VALUES (%s, %s, %s, %s, %s)"
-  val = (date, candidate_id, job_title, salary, status)
-  connect.mycursor.execute(sql, val)
-  connect.mydb.commit()
+def store(proposal):
+  sql = "INSERT INTO proposals (candidate_id, job_title, salary, status) VALUES (%s, %s, %s, %s)"
+  values = tuple(proposal.values())
+  connect.cursor.execute(sql, values)
+  connect.db.commit()
   
-  print(connect.mycursor.rowcount, "proposal saved.")
+  print("1 row inserted.")
 
 def index():
-  connect.mycursor.execute("SELECT * FROM proposals")
-  result = connect.mycursor.fetchall()
+  connect.cursor.execute("SELECT * FROM proposals")
+  result = connect.cursor.fetchall()
   return result
 
 def show(id):
   sql = "SELECT * FROM proposals WHERE id = %s"
   val = (id,)
-  connect.mycursor.execute(sql, val)
-  result = connect.mycursor.fetchone()
+  connect.cursor.execute(sql, val)
+  result = connect.cursor.fetchone()
   return result
 
 def update(proposal):
-  sql = "UPDATE proposals SET date = %s, job_title = %s, salary = %s, status = %s WHERE id = %s"
-  val = (proposal['date'], proposal['job_title'], proposal['salary'], proposal['status'], proposal['id'])
-  connect.mycursor.execute(sql, val)
-  connect.mydb.commit()
+  query = "UPDATE proposals SET candidate_id = %s, proposal_date = %s, job_title = %s, salary = %s, status = %s WHERE id = %s"
+  attrs = list(proposal.values())
+  proposalId = attrs[0]
+  attrs.pop(0)
+  attrs.append(proposalId)
+  values = tuple(attrs,)
+  connect.cursor.execute(query, values)
+  connect.db.commit()
+  print('1 row updated.')
 
-  print(connect.mycursor.rowcount, "proposal updated.")
+def delete(proposalId):
+  query = 'DELETE FROM proposals WHERE id = %s'
+  value = (proposalId,)
+  connect.cursor.execute(query, value)
+  connect.db.commit()
+  print('Proposal has been deleted.')
