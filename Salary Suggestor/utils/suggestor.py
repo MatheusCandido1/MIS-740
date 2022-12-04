@@ -8,6 +8,7 @@ EXECUTIVE_LEVEL = 135930.3
 
 RANGE = 5000
 
+
 def get_company_size(employees):
   if employees <= 49:
     return 'S'

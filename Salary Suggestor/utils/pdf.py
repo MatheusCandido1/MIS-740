@@ -34,9 +34,9 @@ class PDF(FPDF):
         self.ln(6)
         
 def format_currency(value):
-    return f"$ {value:,.2f}"
+    return f"${value:,.2f}"
 
-def generate_pdf(company, candidate, proposal):
+def generate(company, candidate, proposal):
     pdfData = {
         "recipientName": candidate['name'],
         "jobTitle": proposal['job_title'],

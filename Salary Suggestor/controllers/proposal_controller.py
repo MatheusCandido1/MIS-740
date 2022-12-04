@@ -6,7 +6,7 @@ def store(proposal):
   connect.cursor.execute(sql, values)
   connect.db.commit()
   
-  print("1 row inserted.")
+  print("Proposal created successfully.")
 
 def index():
   connect.cursor.execute("SELECT * FROM proposals")
@@ -29,7 +29,7 @@ def update(proposal):
   values = tuple(attrs,)
   connect.cursor.execute(query, values)
   connect.db.commit()
-  print('1 row updated.')
+  print('Proposal updated successfully.')
 
 def delete(proposalId):
   query = 'DELETE FROM proposals WHERE id = %s'

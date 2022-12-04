@@ -11,7 +11,7 @@ def create_companies_table():
 
 # Create table Candidates
 def create_candidates_table():
-  cursor.execute("CREATE TABLE IF NOT EXISTS candidates (id int(11) primary key not null auto_increment, name VARCHAR(255), address VARCHAR(255), email VARCHAR(60), phone VARCHAR(20), experience_level VARCHAR(20), remote_ratio VARCHAR(20))")
+  cursor.execute("CREATE TABLE IF NOT EXISTS candidates (id int(11) primary key not null auto_increment, name VARCHAR(255), address VARCHAR(255), email VARCHAR(60), phone VARCHAR(20), experience_level VARCHAR(20), employment_type VARCHAR(2))")
 
 # Create table Proposals
 def create_proposals_table():

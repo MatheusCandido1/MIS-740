@@ -1,11 +1,11 @@
 from database import connect
 
 def store(candidate):
-  query = "INSERT INTO candidates (name, address, email, phone, experience_level, remote_ratio) VALUES (%s, %s, %s, %s, %s, %s)"
+  query = "INSERT INTO candidates (name, address, email, phone, experience_level, employment_type) VALUES (%s, %s, %s, %s, %s, %s)"
   values = tuple(candidate.values())
   connect.cursor.execute(query, values)
   connect.db.commit()
-  print('1 row inserted.')
+  print('Candidate created successfully.')
 
 def index():
   connect.cursor.execute("SELECT * FROM candidates")
@@ -23,7 +23,7 @@ def show(candidateId):
     return result
 
 def update(candidate):
-  query = 'UPDATE candidates SET name = %s, address = %s, email = %s, phone = %s, experience_level = %s, remote_ratio = %s WHERE id = %s'
+  query = 'UPDATE candidates SET name = %s, address = %s, email = %s, phone = %s, experience_level = %s, employment_type = %s WHERE id = %s'
   attrs = list(candidate.values())
   candidateId = attrs[0]
   attrs.pop(0)
@@ -31,7 +31,7 @@ def update(candidate):
   values = tuple(attrs,)
   connect.cursor.execute(query, values)
   connect.db.commit()
-  print('1 row updated.')
+  print('Candidate updated successfully.')
 
 def delete(candidateId):
   query = 'DELETE FROM candidates WHERE id = %s'
