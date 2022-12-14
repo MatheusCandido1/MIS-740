@@ -3,8 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-%matplotlib inline
-
 def format_currency(value):
     return '{:,.2f}'.format(value)
     
@@ -39,32 +37,37 @@ def show_chart_options():
 def show_regression():
     maskedData = mask_data_by_application_data('2')
     sns.jointplot("total cost", "$Incentive", data=maskedData, kind="reg")
+    plt.show()
 
 def show_distribution():
     maskedData = mask_data_by_application_data('1')
     grid = sns.FacetGrid(maskedData, row="Project Status", col="Purchase Type", margin_titles=True)
-    grid.map(plt.hist, "total cost", bins=np.linspace(0,100000,12))
+    grid.map(plt.hist, "total cost")
+    plt.show()
 
 def show_scatter_plots():
     maskedData = mask_data_by_application_data('1')
     inverterQuality = maskedData['Total Inverter Quantity']
-    hightDensityCounties = maskedData['Expected kWh Annual Production'] >= 100
-    mediumDensityCounties = maskedData['Expected kWh Annual Production'] < 100
-    lowDensityCounties = maskedData['Expected kWh Annual Production'] < 10
-    
-    plt.scatter(inverterQuality, hightDensityCounties, label="High Density Counties", alpha=0.5)
-    plt.scatter(inverterQuality, mediumDensityCounties, label="Medium Density Counties", alpha=0.5)
-    plt.scatter(inverterQuality, lowDensityCounties, label="Low Density Counties", alpha=0.5)
-    
+    highDensityCounties = (maskedData['Density (Pop./mi2)'] >= 1000)
+    mediumDensityCounties = (maskedData['Density (Pop./mi2)'] < 1000) & (maskedData['Density (Pop./mi2)'] >= 500)
+    lowDensityCounties = (maskedData['Density (Pop./mi2)'] < 500)
+
+    plt.scatter(inverterQuality[highDensityCounties], maskedData['Expected kWh Annual Production'][highDensityCounties], label="High Density Counties", alpha=0.2)
+    plt.scatter(inverterQuality[mediumDensityCounties], maskedData['Expected kWh Annual Production'][mediumDensityCounties], label="High Density Counties", alpha=0.2)
+    plt.scatter(inverterQuality[lowDensityCounties], maskedData['Expected kWh Annual Production'][lowDensityCounties], label="High Density Counties", alpha=0.2)
+
     plt.title('Inverter Quantity and Expected KMh Production')
     plt.ylabel('Expected KMh Production')
     plt.xlabel('Inverter Quantity')
     plt.legend()
 
+    plt.show()
+
 def show_pair_plots():
     fullData = mask_data_by_application_data('3')
     filteredData = fullData[['Purchase Type', 'total cost','$Incentive','Area (sq mi)','Application_Month']]
     sns.pairplot(filteredData, hue="Purchase Type", height=2.5)
+    plt.show()
     
     
 NYCOUNTYFILE = 'NY County.csv'
@@ -96,9 +99,9 @@ while typeOfApplication not in ['1','2','3']:
     
 if typeOfApplication in ['1','2']:
     maskedData = mask_data_by_application_data(typeOfApplication)
-    print('Average total cost per project: ', format_currency(maskedData['total cost'].mean()))
-    print('Average incentive per project: ', format_currency(maskedData['$Incentive'].mean()))
-    print('Average months to complete: ', format_currency(maskedData['Application_Month'].mean()))
+    print('Average total cost per project: '.ljust(30, ' '), format_currency(maskedData['total cost'].mean()).rjust(15, ' '))
+    print('Average incentive per project: '.ljust(30, ' '), format_currency(maskedData['$Incentive'].mean()).rjust(15, ' '))
+    print('Average months to complete: '.ljust(30, ' '), format_currency(maskedData['Application_Month'].mean()).rjust(15, ' '))
 
 print('Please select one of the options below to see the data distribution:')
 show_chart_options()
